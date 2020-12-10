@@ -4,7 +4,7 @@ const getWeatherByLocation = () => {
 }
 
 const getWeatherFromApi = (location) => {
-    fetch("http://localhost:8111/api/weather?location=" + location)
+    fetch("https://kapitanovslog.herokuapp.com/api/weather?location=" + location)
         .then(response => response.json())
         .then(data => parseToOutPut(data, location))
         .catch(error => console.log(error));
