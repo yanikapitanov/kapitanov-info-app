@@ -1,0 +1,28 @@
+server:
+  port: 8111
+
+spring:
+  codec:
+    max-in-memory-size: 10MB
+  datasource:
+    # values for url, username and password will be provided by vault on non-local environments
+    url: jdbc:postgresql://localhost:5440/dbs_kapitanov_info?currentSchema=scm_info_app
+    username: info_bot_user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+weather-app-key: 07d7c721ec46841887a69554ad6747f8
+
+telegram:
+    key: "1480130133:AAENPdu4BqMYNz8xxOdX1sVmWgXiT_MWewM"
+    user-name: "@kapitanov_transport_bot"
+
+geocode:
+  url: "https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=1&type=suburb"
+
+covid:
+  url:
+
+weather:
+  url: "https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&appid=%s&units=metric"
+  key: 07d7c721ec46841887a69554ad6747f8

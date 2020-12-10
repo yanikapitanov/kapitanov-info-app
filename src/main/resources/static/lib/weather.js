@@ -3,11 +3,28 @@ const getWeatherByLocation = () => {
     getWeatherFromApi(location)
 }
 
+// const getWeatherFromApi = (location) => {
+//     if(location == null) {
+//         document.getElementById("weatherPlaceholder").innerHTML = `Location cannot be empty`;
+//     }
+//     fetch("https://kapitanovslog.herokuapp.com/api/weather/get?location=" + location)
+//         .then(response => response.json())
+//         .then(data => parseToOutPut(data, location))
+//         .catch(error => console.log(error));
+// }
+
 const getWeatherFromApi = (location) => {
-    fetch("http://localhost:8111/api/weather?location=" + location)
-        .then(response => response.json())
-        .then(data => parseToOutPut(data, location))
-        .catch(error => console.log(error));
+    if (location === "" || location == null) {
+        document.getElementById("weatherPlaceholder").innerHTML =
+            `<div class="alert alert-warning alert-dismissible">
+                Location cannot be empty
+            </div>`;
+    } else {
+        fetch("http://localhost:8111/api/weather/get?location=" + location)
+            .then(response => response.json())
+            .then(data => parseToOutPut(data, location))
+            .catch(error => console.log(error));
+    }
 }
 
 const parseToOutPut = (data, location) => {

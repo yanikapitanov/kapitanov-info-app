@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: kapitanov-info-app-db
+    build:
+      context: ./postgres/
+      dockerfile: Dockerfile
+    ports:
+      - "5440:5432"
+    environment:
+      POSGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dbs_kapitanov_info
+    network_mode: bridge
+    healthcheck:
+      test: ["CMD", "pg_isread -U postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 15

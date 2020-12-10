@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: database/00000_init.sql
