@@ -1,4 +1,4 @@
-package com.kapitanovslog.dailyinfoapp.model;
+package com.kapitanovslog.dailyinfoapp.model.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

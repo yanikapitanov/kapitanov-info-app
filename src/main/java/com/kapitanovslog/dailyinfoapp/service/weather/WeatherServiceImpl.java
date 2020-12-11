@@ -1,6 +1,6 @@
-package com.kapitanovslog.dailyinfoapp.service;
+package com.kapitanovslog.dailyinfoapp.service.weather;
 
-import com.kapitanovslog.dailyinfoapp.model.Weather;
+import com.kapitanovslog.dailyinfoapp.model.weather.Weather;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

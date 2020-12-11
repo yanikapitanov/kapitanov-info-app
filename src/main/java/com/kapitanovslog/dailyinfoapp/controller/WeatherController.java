@@ -1,7 +1,8 @@
 package com.kapitanovslog.dailyinfoapp.controller;
 
-import com.kapitanovslog.dailyinfoapp.model.Weather;
-import com.kapitanovslog.dailyinfoapp.service.WeatherService;
+import com.kapitanovslog.dailyinfoapp.model.weather.Weather;
+import com.kapitanovslog.dailyinfoapp.service.transport.PublicTransportService;
+import com.kapitanovslog.dailyinfoapp.service.weather.WeatherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,16 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api")
-public class ApiController {
+@RequestMapping(value = "/api/weather")
+public class WeatherController {
 
     private final WeatherService weatherService;
 
-    public ApiController(WeatherService weatherService) {
+    public WeatherController(WeatherService weatherService) {
         this.weatherService = weatherService;
     }
 
-    @GetMapping("/weather")
+    @GetMapping("/get")
     public ResponseEntity<?> getWeather(@RequestParam String location) {
         Map<String, Object> response = new HashMap<>();
         Weather weather = weatherService.getWeatherByLocation(location);
@@ -30,4 +31,8 @@ public class ApiController {
         response.put("sys", weather.getSys());
         return ResponseEntity.ok().body(response);
     }
+
+    // TODO: weather-prediction method
+
+    // TODO: Air pollution API
 }

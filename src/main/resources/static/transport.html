@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Kapitanov's Log</title>
+    <meta charset="UTF-8">
+    <title>Public Transport Disruptions</title>
     <link rel="shortcut icon" href="./favicon.ico"/>
 </head>
 <body>
@@ -13,7 +13,7 @@
             <a class="nav-link" href="./index.html">Weather</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="./transport.html">Public Transport</a>
+            <a class="nav-link" href="#">Public Transport</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
@@ -27,13 +27,13 @@
     <div class="container">
         <h1>Kapitanov's log</h1>
         <h2>Learning to code.</h2>
-        <p>This is a basic weather app</p>
+        <p>This web page shows disruptions of MVG</p>
     </div>
 </div>
 <div id="weather" class="container">
-    <input id="weatherInput" type="text" placeholder="Location" class="form-control-plaintext">
-    <button type="button" class="btn btn-secondary" onclick="getWeatherByLocation()">Submit</button>
-    <script src="./lib/weather.js"></script>
+    <input id="lines" type="text" placeholder="Munich Transport Lines" class="form-control-plaintext">
+    <button type="button" class="btn btn-secondary" onclick="getTransportDisruptions()">Submit</button>
+    <script src="./lib/transport.js"></script>
 </div>
 <p>
 <div id="weatherPlaceholder" class="container container-fluid"></div>

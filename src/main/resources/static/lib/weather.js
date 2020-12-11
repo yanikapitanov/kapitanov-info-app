@@ -3,8 +3,15 @@ const getWeatherByLocation = () => {
     getWeatherFromApi(location)
 }
 
+// const getWeatherFromApi = (location) => {
+//     fetch("https://kapitanovslog.herokuapp.com/api/weather/get?location=" + location)
+//         .then(response => response.json())
+//         .then(data => parseToOutPut(data, location))
+//         .catch(error => console.log(error));
+// }
+
 const getWeatherFromApi = (location) => {
-    fetch("https://kapitanovslog.herokuapp.com/api/weather?location=" + location)
+    fetch("http://localhost:8111/api/weather/get?location=" + location)
         .then(response => response.json())
         .then(data => parseToOutPut(data, location))
         .catch(error => console.log(error));
