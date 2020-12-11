@@ -3,27 +3,27 @@ const getTransportDisruptions = () => {
     getTransportFromApi(location)
 }
 
-// const getTransportFromApi = (lines) => {
-// let url = "https://kapitanovslog.herokuapp.com/api/transport/interruptions";
-// if (lines) {
-//     url += "?transportLines=" + lines;
-// }
-//     fetch(url)
-//         .then(response => response.json())
-//         .then(data => parseToOutPut(data))
-//         .catch(error => console.log(error));
-// }
-
 const getTransportFromApi = (lines) => {
-    let url = "http://localhost:8111/api/transport/interruptions";
-    if (lines) {
-        url += "?transportLines=" + lines;
-    }
+let url = "https://kapitanovslog.herokuapp.com/api/transport/interruptions";
+if (lines) {
+    url += "?transportLines=" + lines;
+}
     fetch(url)
         .then(response => response.json())
         .then(data => parseToOutPut(data))
         .catch(error => console.log(error));
 }
+
+// const getTransportFromApi = (lines) => {
+//     let url = "http://localhost:8111/api/transport/interruptions";
+//     if (lines) {
+//         url += "?transportLines=" + lines;
+//     }
+//     fetch(url)
+//         .then(response => response.json())
+//         .then(data => parseToOutPut(data))
+//         .catch(error => console.log(error));
+// }
 
 const parseToOutPut = (data) => {
     let str = '';

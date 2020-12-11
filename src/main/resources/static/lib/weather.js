@@ -3,19 +3,19 @@ const getWeatherByLocation = () => {
     getWeatherFromApi(location)
 }
 
-// const getWeatherFromApi = (location) => {
-//     fetch("https://kapitanovslog.herokuapp.com/api/weather/get?location=" + location)
-//         .then(response => response.json())
-//         .then(data => parseToOutPut(data, location))
-//         .catch(error => console.log(error));
-// }
-
 const getWeatherFromApi = (location) => {
-    fetch("http://localhost:8111/api/weather/get?location=" + location)
+    fetch("https://kapitanovslog.herokuapp.com/api/weather/get?location=" + location)
         .then(response => response.json())
         .then(data => parseToOutPut(data, location))
         .catch(error => console.log(error));
 }
+
+// const getWeatherFromApi = (location) => {
+//     fetch("http://localhost:8111/api/weather/get?location=" + location)
+//         .then(response => response.json())
+//         .then(data => parseToOutPut(data, location))
+//         .catch(error => console.log(error));
+// }
 
 const parseToOutPut = (data, location) => {
     const weatherObject = data.main;
