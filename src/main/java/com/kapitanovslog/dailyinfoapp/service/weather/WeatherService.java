@@ -1,7 +1,7 @@
 package com.kapitanovslog.dailyinfoapp.service.weather;
 
-import com.kapitanovslog.dailyinfoapp.model.weather.Weather;
+import com.kapitanovslog.dailyinfoapp.model.weather.WeatherResponse;
 
 public interface WeatherService {
-    Weather getWeatherByLocation(String location);
+    WeatherResponse getWeatherByLocation(String location);
 }

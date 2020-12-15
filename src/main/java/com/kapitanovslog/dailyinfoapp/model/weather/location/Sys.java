@@ -1,4 +1,4 @@
-package com.kapitanovslog.dailyinfoapp.model.weather;
+package com.kapitanovslog.dailyinfoapp.model.weather.location;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -44,5 +44,29 @@ public class Sys{
 
 	public double getMessage(){
 		return message;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public void setSunrise(int sunrise) {
+		this.sunrise = sunrise;
+	}
+
+	public void setSunset(int sunset) {
+		this.sunset = sunset;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public void setMessage(double message) {
+		this.message = message;
 	}
 }

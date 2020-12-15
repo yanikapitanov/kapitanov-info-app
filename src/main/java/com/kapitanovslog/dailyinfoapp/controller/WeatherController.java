@@ -1,7 +1,6 @@
 package com.kapitanovslog.dailyinfoapp.controller;
 
-import com.kapitanovslog.dailyinfoapp.model.weather.Weather;
-import com.kapitanovslog.dailyinfoapp.service.transport.PublicTransportService;
+import com.kapitanovslog.dailyinfoapp.model.weather.WeatherResponse;
 import com.kapitanovslog.dailyinfoapp.service.weather.WeatherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +22,14 @@ public class WeatherController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?> getWeather(@RequestParam String location) {
+    public ResponseEntity<?> getWeather(@RequestParam(required = false) String location) {
         Map<String, Object> response = new HashMap<>();
-        Weather weather = weatherService.getWeatherByLocation(location);
-        response.put("weather", weather.getWeather());
-        response.put("main", weather.getMain());
-        response.put("sys", weather.getSys());
+        WeatherResponse weather = weatherService.getWeatherByLocation(location);
+        response.put("hourly", weather.getHourly());
+        response.put("country", weather.getCountry());
+        response.put("location", weather.getLocation());
+        response.put("daily", weather.getDaily());
+        response.put("alerts", weather.getAlerts());
         return ResponseEntity.ok().body(response);
     }
 

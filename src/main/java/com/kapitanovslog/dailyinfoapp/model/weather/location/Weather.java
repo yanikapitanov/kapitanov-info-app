@@ -1,4 +1,4 @@
-package com.kapitanovslog.dailyinfoapp.model.weather;
+package com.kapitanovslog.dailyinfoapp.model.weather.location;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -94,5 +94,57 @@ public class Weather{
 
 	public Wind getWind(){
 		return wind;
+	}
+
+	public void setVisibility(int visibility) {
+		this.visibility = visibility;
+	}
+
+	public void setTimezone(int timezone) {
+		this.timezone = timezone;
+	}
+
+	public void setMain(Main main) {
+		this.main = main;
+	}
+
+	public void setClouds(Clouds clouds) {
+		this.clouds = clouds;
+	}
+
+	public void setSys(Sys sys) {
+		this.sys = sys;
+	}
+
+	public void setDt(int dt) {
+		this.dt = dt;
+	}
+
+	public void setCoord(Coord coord) {
+		this.coord = coord;
+	}
+
+	public void setWeather(List<WeatherItem> weather) {
+		this.weather = weather;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCod(int cod) {
+		this.cod = cod;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setBase(String base) {
+		this.base = base;
+	}
+
+	public void setWind(Wind wind) {
+		this.wind = wind;
 	}
 }

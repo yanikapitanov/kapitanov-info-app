@@ -24,6 +24,7 @@ public class PublicTransportServiceImpl implements PublicTransportService {
     public List<TransportResponse> getInterruptionsByLines(String... userLines) {
         RestTemplate restTemplate = new RestTemplate();
         Transport data = restTemplate.getForObject(interruptions_url, Transport.class);
+        System.out.println(data);
         List<Line> lineInterruptions = Optional.ofNullable(data.getLines()).orElse(new ArrayList<>());
         if (null != userLines && userLines.length > 0) {
             List<Line> userDisruptedLines = matchInterruptionsAndUserLines(lineInterruptions, userLines);
