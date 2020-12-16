@@ -22,18 +22,12 @@ public class WeatherResponse {
     public static class Builder {
         private final String location;
         private Current current;
-        private String country;
         private List<HourlyItem> hourly;
         private List<DailyItem> daily;
         private List<AlertsItem> alerts;
 
         public Builder(String location) {
             this.location = location;
-        }
-
-        public Builder withCountry(String country) {
-            this.country = country;
-            return this;
         }
 
         public Builder withCurrent(Current current) {
@@ -59,7 +53,6 @@ public class WeatherResponse {
         public WeatherResponse build() {
             WeatherResponse response = new WeatherResponse();
             response.location = this.location;
-            response.country = this.country;
             response.daily = this.daily;
             response.hourly = this.hourly;
             response.alerts = this.alerts;
@@ -70,7 +63,6 @@ public class WeatherResponse {
     }
     private Current current;
     private String location;
-    private String country;
     private List<HourlyItem> hourly;
     private List<DailyItem> daily;
     private List<AlertsItem> alerts;
@@ -81,14 +73,6 @@ public class WeatherResponse {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public List<HourlyItem> getHourly() {

@@ -26,7 +26,6 @@ public class WeatherController {
         Map<String, Object> response = new HashMap<>();
         WeatherResponse weather = weatherService.getWeatherByLocation(location);
         response.put("hourly", weather.getHourly());
-        response.put("country", weather.getCountry());
         response.put("location", weather.getLocation());
         response.put("daily", weather.getDaily());
         response.put("alerts", weather.getAlerts());
