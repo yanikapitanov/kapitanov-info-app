@@ -1,7 +1,9 @@
 package com.kapitanovslog.dailyinfoapp.model.geocode;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Address{
 
 	@JsonProperty("country")

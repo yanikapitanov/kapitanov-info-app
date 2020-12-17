@@ -1,20 +1,26 @@
 package com.kapitanovslog.dailyinfoapp.service.telegram;
 
+import com.kapitanovslog.dailyinfoapp.service.pollution.AirPollutionService;
+import com.kapitanovslog.dailyinfoapp.service.pollution.AirPollutionServiceImpl;
+import com.kapitanovslog.dailyinfoapp.service.pollution.PollutionService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotWeather weatherTelegram;
-    private final PollutionBot pollutionBot;
+    private final PollutionService pollutionService;
+    private final AirPollutionService airPollutionService;
 
-    public TelegramBot(TelegramBotWeather weatherTelegram, PollutionBot pollutionBot) {
+    public TelegramBot(TelegramBotWeather weatherTelegram, PollutionService pollutionService, AirPollutionService airPollutionService) {
         this.weatherTelegram = weatherTelegram;
-        this.pollutionBot = pollutionBot;
+        this.pollutionService = pollutionService;
+        this.airPollutionService = airPollutionService;
     }
 
     @Override
@@ -49,26 +55,27 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private String menu(String userInput) {
-        System.out.println(userInput);
+
         if (userInput == null || userInput.isEmpty()) {
-            userInput = "help";
+            userInput = "/help";
         }
 
-        if (userInput.equalsIgnoreCase("help")) {
-            return "Type wd {city/country} for daily forecast\n" +
-                    "wh {city/country} for hourly forecast";
+        if (userInput.equalsIgnoreCase("/help")) {
+            return "Type /wd {city/country} for daily forecast\n" +
+                    "/wh {city/country} for hourly forecast" +
+                    "/ap {location} for air pollution stats";
         }
 
-        String response = " ";
-        String command = userInput.substring(0, 2);
-        String location = userInput.substring(3);
+        String response = "";
 
         try {
-            if (command.equalsIgnoreCase("wd") ||
-                    command.equalsIgnoreCase("wh")) {
+            String command = userInput.substring(0, 3);
+            String location = userInput.substring(4);
+            if (command.equalsIgnoreCase("/wd") ||
+                    command.equalsIgnoreCase("/wh")) {
                 response = weatherTelegram.getWeatherMessageUpdate(location, command);
-            } else if (command.equalsIgnoreCase("ap")) {
-                response = pollutionBot.getPollutionInfo(location);
+            } else if (command.equalsIgnoreCase("/ap")) {
+                response = airPollutionService.pollutionInfoToString(location);
             }
         } catch (IndexOutOfBoundsException e) {
             response = "Type \"help\" for help menu\n";
