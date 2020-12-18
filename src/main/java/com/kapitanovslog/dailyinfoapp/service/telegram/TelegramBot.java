@@ -14,12 +14,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotWeather weatherTelegram;
-    private final PollutionService pollutionService;
     private final AirPollutionService airPollutionService;
 
-    public TelegramBot(TelegramBotWeather weatherTelegram, PollutionService pollutionService, AirPollutionService airPollutionService) {
+    public TelegramBot(TelegramBotWeather weatherTelegram, AirPollutionService airPollutionService) {
         this.weatherTelegram = weatherTelegram;
-        this.pollutionService = pollutionService;
         this.airPollutionService = airPollutionService;
     }
 
@@ -62,7 +60,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         if (userInput.equalsIgnoreCase("/help")) {
             return "Type /wd {city/country} for daily forecast\n" +
-                    "/wh {city/country} for hourly forecast" +
+                    "/wh {city/country} for hourly forecast\n" +
                     "/ap {location} for air pollution stats";
         }
 

@@ -38,7 +38,7 @@ public class TelegramBotWeather {
                 .append("\n\n");
         result.append("Current: ").append(response.getCurrent().getTemp()).append(" C").append("\n\n");
 
-        if (command.equalsIgnoreCase("wd")) {
+        if (command.equalsIgnoreCase("/wd")) {
             result.append(getDailyWeather(response));
         } else {
             result.append(getHourlyWeather(response));

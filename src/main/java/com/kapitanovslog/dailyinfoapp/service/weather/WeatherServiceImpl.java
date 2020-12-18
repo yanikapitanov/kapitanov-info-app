@@ -39,7 +39,7 @@ public class WeatherServiceImpl implements WeatherService {
         GeocodeLocation geocodeLocation = geocodeService.getGeocodeLocation(location);
         String url = getUrl(geocodeLocation);
         ResponseEntity<Response> response = restTemplate.getForEntity(url, Response.class);
-        System.out.println(geocodeLocation.getDisplayName());
+
         return new WeatherResponse
                 .Builder(geocodeLocation.getDisplayName())
                 .withAlerts(response.getBody().getAlerts())
@@ -57,7 +57,6 @@ public class WeatherServiceImpl implements WeatherService {
         RestTemplate restTemplate = new RestTemplate();
         String url = LOCATION_URL + location + "&appId=" + key;
         try {
-            System.out.println(geocodeService.getGeocodeLocation(location));
             return restTemplate.getForEntity(url, Weather.class).getBody();
         } catch (HttpClientErrorException e) {
             LOGGER.error(e.getMessage());
