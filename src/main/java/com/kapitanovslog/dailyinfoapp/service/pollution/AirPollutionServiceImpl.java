@@ -20,7 +20,7 @@ public class AirPollutionServiceImpl implements AirPollutionService {
     public static final DecimalFormat DF = new DecimalFormat("#.00");
 
     public static final String URL_PREFIX = "https://data.sensor.community/airrohr/v1/filter/area=";
-    public static final String URL_SUFFIX = ",1&type=SDS011";
+    public static final String URL_SUFFIX = "&type=SDS011";
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private final GeocodeService geocodeService;
@@ -47,8 +47,9 @@ public class AirPollutionServiceImpl implements AirPollutionService {
     public AirPollutionResponse getPollutionData(String location) {
         AirPollutionResponse response = new AirPollutionResponse();
         GeocodeLocation geolocation = geocodeService.getGeocodeLocation(location);
+        int area = setRegionArea(geolocation.getType());
 
-        String url = URL_PREFIX + geolocation.getLat() + "," + geolocation.getLon() + URL_SUFFIX;
+        String url = URL_PREFIX + geolocation.getLat() + "," + geolocation.getLon() + "," + area + URL_SUFFIX;
         JsonNode pollutions = new RestTemplate().getForObject(url, JsonNode.class);
         List<AirPollution> airPollutions = getAirPollutions(pollutions);
 
@@ -64,6 +65,17 @@ public class AirPollutionServiceImpl implements AirPollutionService {
         response.setPm10Quality(pm10Quality);
 
         return response;
+    }
+
+    private int setRegionArea(String location) {
+        if (location.equalsIgnoreCase("suburb")) {
+            return 1;
+        } else if (location.equalsIgnoreCase("town")) {
+            return 15;
+        } else if (location.equalsIgnoreCase("administrative")) {
+            return 300;
+        }
+        return 1;
     }
 
     private Double getAverage(List<AirPollution> pollutions, final String filter) {

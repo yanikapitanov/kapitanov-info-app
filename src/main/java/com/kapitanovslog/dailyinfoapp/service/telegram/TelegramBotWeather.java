@@ -7,7 +7,6 @@ import com.kapitanovslog.dailyinfoapp.model.weather.openapi.WeatherItem;
 import com.kapitanovslog.dailyinfoapp.service.weather.WeatherService;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

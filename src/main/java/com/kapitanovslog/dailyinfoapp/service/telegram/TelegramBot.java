@@ -1,13 +1,11 @@
 package com.kapitanovslog.dailyinfoapp.service.telegram;
 
+import com.kapitanovslog.dailyinfoapp.service.covid.CovidService;
 import com.kapitanovslog.dailyinfoapp.service.pollution.AirPollutionService;
-import com.kapitanovslog.dailyinfoapp.service.pollution.AirPollutionServiceImpl;
-import com.kapitanovslog.dailyinfoapp.service.pollution.PollutionService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
@@ -15,10 +13,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotWeather weatherTelegram;
     private final AirPollutionService airPollutionService;
+    private final CovidService covidService;
 
-    public TelegramBot(TelegramBotWeather weatherTelegram, AirPollutionService airPollutionService) {
+    public TelegramBot(TelegramBotWeather weatherTelegram, AirPollutionService airPollutionService, CovidService covidService) {
         this.weatherTelegram = weatherTelegram;
         this.airPollutionService = airPollutionService;
+        this.covidService = covidService;
     }
 
     @Override
@@ -74,6 +74,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 response = weatherTelegram.getWeatherMessageUpdate(location, command);
             } else if (command.equalsIgnoreCase("/ap")) {
                 response = airPollutionService.pollutionInfoToString(location);
+            } else if (command.equalsIgnoreCase("/cd")) {
+                response = covidService.getCovidInfoByCountry(location);
             }
         } catch (IndexOutOfBoundsException e) {
             response = "Type \"help\" for help menu\n";
