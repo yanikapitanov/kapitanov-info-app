@@ -4,6 +4,6 @@ import com.kapitanovslog.dailyinfoapp.model.transport.TransportResponse;
 
 import java.util.List;
 
-public interface PublicTransportService {
-    List<TransportResponse> getInterruptionsByLines(String... transportLines);
+public interface PublicTransportInterruptionsService {
+    List<TransportResponse> getInterruptionsByLines(String line);
 }
