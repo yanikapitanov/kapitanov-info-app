@@ -1,5 +1,8 @@
 package com.kapitanovslog.dailyinfoapp.model.weather.openapi;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 public class DailyItem extends TimeItem {
@@ -87,4 +90,13 @@ public class DailyItem extends TimeItem {
 		return sunset;
 	}
 
+	@Override
+	public String getDateOrTime() {
+		return LocalDateTime.ofInstant(Instant.ofEpochSecond(super.getDt()), ZoneId.systemDefault()).getDayOfWeek().name();
+	}
+
+	@Override
+	public Double getTemperature() {
+		return this.temp.getDay();
+	}
 }

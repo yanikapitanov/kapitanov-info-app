@@ -1,6 +1,8 @@
 package com.kapitanovslog.dailyinfoapp.model.weather.openapi;
 
-import java.util.List;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class HourlyItem extends TimeItem {
 	private Rain rain;
@@ -68,4 +70,13 @@ public class HourlyItem extends TimeItem {
 		return dewPoint;
 	}
 
+	@Override
+	public String getDateOrTime() {
+		return LocalDateTime.ofInstant(Instant.ofEpochSecond(super.getDt()), ZoneId.systemDefault()).toLocalTime().toString();
+	}
+
+	@Override
+	public Double getTemperature() {
+		return this.temp;
+	}
 }

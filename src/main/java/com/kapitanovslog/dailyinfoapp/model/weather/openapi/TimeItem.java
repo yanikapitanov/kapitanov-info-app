@@ -5,7 +5,7 @@ import java.util.List;
 public abstract class TimeItem {
     private int pressure;
     private int clouds;
-    private int dt;
+    private Long dt;
     private List<WeatherItem> weather;
     private int humidity;
     private double windSpeed;
@@ -26,11 +26,11 @@ public abstract class TimeItem {
         this.clouds = clouds;
     }
 
-    public int getDt() {
+    public Long getDt() {
         return dt;
     }
 
-    public void setDt(int dt) {
+    public void setDt(Long dt) {
         this.dt = dt;
     }
 
@@ -57,4 +57,8 @@ public abstract class TimeItem {
     public void setWindSpeed(double windSpeed) {
         this.windSpeed = windSpeed;
     }
+
+    public abstract String getDateOrTime();
+
+    public abstract Double getTemperature();
 }
