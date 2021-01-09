@@ -27,7 +27,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final RedditService redditService;
     private final TelegramBotTransport transport;
 
-    public static final List<String> COMMANDS = Arrays.asList("/wd", "/wh", "/ap", "/covid", "/inter", "/help");
+    public static final List<String> COMMANDS = Arrays.asList("/weekly", "/daily", "/pollution", "/covid", "/transport", "/help");
 
     public TelegramBot(TelegramBotWeather weatherTelegram, AirPollutionService airPollutionService, CovidService covidService, RedditService redditService, TelegramBotTransport transport) {
         this.weatherTelegram = weatherTelegram;
@@ -79,17 +79,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         String param = userInput.replace(command, "").trim();
 
         if (command.equalsIgnoreCase("/help")) {
-            return "Type /wd {city/country} for daily forecast\n" +
-                    "/wh {city/country} for hourly forecast\n" +
-                    "/ap {location} for air pollution stats";
-        } else if (command.equalsIgnoreCase("/wd") ||
-                command.equalsIgnoreCase("/wh")) {
+            return "/pollution - Shows air pollution at a given location using open source data e.g. /pollution Munich\n" +
+                    "/weekly - Shows weather prediction for the next 7 days for a given location e.g. /weekly London\n" +
+                    "/daily - Shows weather prediction in hours for a given location e.g. /daily London\n" +
+                    "/covid - Provides Covid19 info per country e.g. /covid Germany\n" +
+                    "/transport - Provides disruptions public transport disruptions in Munich for a particular line e.g. /transport s1\n" +
+                    "/help - Provides a help menu";
+        } else if (command.equalsIgnoreCase("/daily") ||
+                command.equalsIgnoreCase("/weekly")) {
             return weatherTelegram.getWeatherMessageUpdate(param, command);
-        } else if (command.equalsIgnoreCase("/ap")) {
+        } else if (command.equalsIgnoreCase("/pollution")) {
             return airPollutionService.pollutionInfoToString(param);
         } else if (command.equalsIgnoreCase("/covid")) {
             return covidService.getCovidInfoByCountry(param);
-        } else if (command.equalsIgnoreCase("/inter")) {
+        } else if (command.equalsIgnoreCase("/transport")) {
             return transport.provideInterruptions(param);
         }
 

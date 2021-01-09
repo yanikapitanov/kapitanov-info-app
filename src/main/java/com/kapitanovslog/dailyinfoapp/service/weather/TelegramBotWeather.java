@@ -24,13 +24,11 @@ public class TelegramBotWeather {
             "snow", ":cloud_snow:"
     );
 
-
     private final WeatherService weatherService;
 
     public TelegramBotWeather(WeatherService weatherService) {
         this.weatherService = weatherService;
     }
-
 
     public String getWeatherMessageUpdate(String location, String command) {
 
@@ -44,15 +42,17 @@ public class TelegramBotWeather {
         StringBuilder result = new StringBuilder();
 
         result.append(String.format("Weather for %s %n%n", response.getLocation()));
-        if (command.equalsIgnoreCase("/wd")) {
+
+        if (command.contains("weekly")) {
             result.append(getWeather(response.getDaily(), 7));
         } else {
             result.append(getWeather(response.getHourly(),12));
         }
+
         return result.toString();
     }
 
-    private String getWeather(final List<? extends TimeItem> response, int limit) {
+    private <T extends TimeItem> String getWeather(final List<T> response, int limit) {
         return response.parallelStream()
                 .limit(limit)
                 .map(this::weatherDataFormatter)
@@ -66,7 +66,7 @@ public class TelegramBotWeather {
                 getWeatherResponseData(timeItem.getWeather()));
     }
 
-    private String getWeatherResponseData(List<WeatherItem> items) {
+    private String getWeatherResponseData(final List<WeatherItem> items) {
         return items.stream()
                 .map(WeatherItem::getDescription)
                 .map(TelegramBotWeather::setEmoji)
