@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,8 +19,6 @@ public class CovidServiceImpl implements CovidService {
     public static final String URL = "https://api.covid19api.com/dayone/country/";
     private final ObjectMapper mapper = new ObjectMapper();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DecimalFormat df = new DecimalFormat("###, ###, ###");
-
 
 
     @Override
@@ -30,11 +27,12 @@ public class CovidServiceImpl implements CovidService {
         try {
             JsonNode response = restTemplate.getForObject(URL + country, JsonNode.class);
             List<Covid> covid = getCovidList(response);
-            int len = covid.size();
 
             if (covid.isEmpty()) {
                 return "No country found";
             }
+
+            int len = covid.size();
             Covid current = covid.get(len - 1);
             Covid prev = covid.get(len - 2);
             return generateStringResponse(current, prev);
@@ -46,48 +44,21 @@ public class CovidServiceImpl implements CovidService {
     }
 
     private String generateStringResponse(Covid current, Covid prev) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Covid stats:").append("\n\n");
+        CovidUtil util = new CovidUtil(current, prev);
+        return "Country: " + current.getCountry() + "\n\n" +
+                "Date: " + util.getDate().format(formatter) + "\n" +
+                calculateIncrease("Confirmed: ", current.getConfirmed(), util.getConfirmedIncrease()) +
+                calculateIncrease("Deaths: ", current.getDeaths(), util.getDeathsIncrease()) +
+                calculateIncrease("Recovered: ", current.getRecovered(), util.getRecoveredIncrease()) +
+                calculateIncrease("Active: ", current.getActive(), util.getActiveIncrease());
+    }
 
-        long activeIncrease = current.getActive() - prev.getActive();
-        long deathsIncrease = current.getDeaths() - prev.getDeaths();
-        long recoveredIncrease = current.getRecovered() - prev.getRecovered();
-        long confirmedIncrease = current.getConfirmed() - prev.getConfirmed();
+    private String calculateIncrease(String label,long confirmed, long increase) {
+        return label + resultOutputTemplating(confirmed,getSymbol(increase), increase);
+    }
 
-        String date = current.getDate().split("T")[0];
-
-        sb.append("Country: ").append(current.getCountry()).append("\n\n");
-
-        sb.append("Date: ").append(LocalDate.parse(date).format(formatter)).append("\n");
-
-        sb.append("Confirmed: ")
-                .append(df.format(current.getConfirmed()))
-                .append(" ").append(getSymbol(confirmedIncrease))
-                .append(" ")
-                .append(df.format(confirmedIncrease))
-                .append("\n");
-        sb.append("Deaths: ")
-                .append(df.format(current.getDeaths()))
-                .append(" ")
-                .append(getSymbol(deathsIncrease))
-                .append(" ")
-                .append(df.format(deathsIncrease))
-                .append("\n");
-        sb.append("Recovered: ")
-                .append(df.format(current.getRecovered()))
-                .append(" ").append(getSymbol(recoveredIncrease))
-                .append(" ")
-                .append(df.format(recoveredIncrease))
-                .append("\n");
-        sb.append("Active: ")
-                .append(df.format(current.getActive()))
-                .append(" ")
-                .append(getSymbol(activeIncrease))
-                .append(" ")
-                .append(df.format(activeIncrease))
-                .append("\n");
-
-        return sb.toString();
+    private String resultOutputTemplating(double num1, String symbol, double num2) {
+        return String.format("%.2f %s %.2f%n", num1, symbol, num2);
     }
 
     private String getSymbol(long num) {

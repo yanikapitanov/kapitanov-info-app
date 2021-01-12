@@ -30,36 +30,34 @@ public class TelegramBotWeather {
         this.weatherService = weatherService;
     }
 
-    public String getWeatherMessageUpdate(String location, String command) {
-
-        WeatherResponse response = Optional.ofNullable(weatherService.getWeatherByLocation(location))
-                .orElseThrow(() -> new WeatherServiceNotAvailable("Could not catch data info"));
-
-        return weatherProvider(command, response);
+    public String getWeeklyWeather(String location) {
+        WeatherResponse response = weatherDataProvider(location);
+        return weatherInfoProvider(location, response.getDaily(), 7);
     }
 
-    private String weatherProvider(String command, WeatherResponse response) {
-        StringBuilder result = new StringBuilder();
-
-        result.append(String.format("Weather for %s %n%n", response.getLocation()));
-
-        if (command.contains("weekly")) {
-            result.append(getWeather(response.getDaily(), 7));
-        } else {
-            result.append(getWeather(response.getHourly(),12));
-        }
-
-        return result.toString();
+    public String getHourlyWeather(String location) {
+        WeatherResponse response = weatherDataProvider(location);
+        return weatherInfoProvider(location, response.getHourly(), 12);
     }
 
-    private <T extends TimeItem> String getWeather(final List<T> response, int limit) {
-        return response.parallelStream()
+    private WeatherResponse weatherDataProvider(String location) {
+        return Optional.ofNullable(weatherService.getWeatherByLocation(location))
+                .orElseThrow(() -> new WeatherServiceNotAvailable("Could not fetch data info"));
+    }
+
+    private <T extends TimeItem> String weatherInfoProvider(String location, final List<T> timeItems, int limit) {
+        return String.format("Weather for %s %n%n", location) +
+                weatherItemsDataFormatter(timeItems, limit);
+    }
+
+    private <T extends TimeItem> String weatherItemsDataFormatter(final List<T> timeItems, int limit) {
+        return timeItems.stream()
                 .limit(limit)
-                .map(this::weatherDataFormatter)
+                .map(this::weatherItemDataFormatter)
                 .collect(Collectors.joining());
     }
 
-    private String weatherDataFormatter(final TimeItem timeItem) {
+    private String weatherItemDataFormatter(final TimeItem timeItem) {
         return String.format("%s %s C %s%n",
                 timeItem.getDateOrTime(),
                 timeItem.getTemperature(),

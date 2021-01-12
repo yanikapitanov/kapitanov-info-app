@@ -1,17 +1,14 @@
 package com.kapitanovslog.dailyinfoapp.service.geocode;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kapitanovslog.dailyinfoapp.model.airpollution.AirPollution;
 import com.kapitanovslog.dailyinfoapp.model.geocode.GeocodeLocation;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Function;
 
 @Service
 public class GeocodeServiceImpl implements GeocodeService {
@@ -37,4 +34,9 @@ public class GeocodeServiceImpl implements GeocodeService {
                 new TypeReference<List<GeocodeLocation>>(){}
         ).get(0);
     }
+
+    private final Function<JsonNode, GeocodeLocation> getGeocodeLocation = node -> mapper.convertValue(
+            node,
+            new TypeReference<List<GeocodeLocation>>(){}
+    ).get(0);
 }
