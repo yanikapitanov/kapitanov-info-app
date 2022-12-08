@@ -61,8 +61,8 @@ class ReminderServiceTest {
 
     @Test
     void  findAllRemindersSuccessfully() {
-        Map<Long, String> expected = Map.of(1L, "Reminders for 2022-11-26\n\nthis is a test");
         LocalDate now = LocalDate.now();
+        Map<Long, String> expected = Map.of(1L, "Reminders for " + now + "\n\nthis is a test");
         List<Reminder> reminders = List.of(Reminder.builder()
                 .chatId(1L)
                 .reminderAt(now)
