@@ -4,9 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Getter
 @ToString
@@ -21,15 +22,18 @@ class Command {
     }
 
     static Command of(String userInput) {
-        String[] userInputSplit = Objects.requireNonNull(userInput)
-                .trim()
-                .split("\\s+");
-        String command = userInputSplit[0];
-        String commandDetails = IntStream.range(1, userInputSplit.length)
-                .boxed()
-                .map(i -> userInputSplit[i])
-                .collect(Collectors.joining(" "));
-        return new Command(command, String.join(" ", commandDetails).trim());
+        System.out.println(userInput);
+        Objects.requireNonNull(userInput);
+        String command = parseUserInput(userInput, s -> s.startsWith("/"), "");
+        String commandDetails = parseUserInput(userInput, s -> !s.startsWith("/"), " ");
+        return new Command(command, commandDetails);
+    }
+
+    private static String parseUserInput(String userInputSplit, Predicate<String> filterString, String delimiter) {
+        return Arrays.stream(userInputSplit.trim().split("\\s+"))
+                .filter(filterString)
+                .map(String::trim)
+                .collect(Collectors.joining(delimiter));
     }
 
 }

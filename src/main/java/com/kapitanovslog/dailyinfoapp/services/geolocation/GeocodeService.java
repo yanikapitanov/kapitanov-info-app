@@ -19,8 +19,7 @@ public class GeocodeService {
 
     public Optional<GeocodeLocation> findGeoLocation(String location) {
         Objects.requireNonNull(location, "Location cannot be null");
-        return geocodeClient.findGeocodeLocation(location)
-                .stream()
+        return geocodeClient.findGeocodeLocation(location).stream()
                 .limit(1)
                 .findFirst();
     }

@@ -1,6 +1,7 @@
 package com.kapitanovslog.dailyinfoapp.services.reddit;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-@Slf4j
+@Log4j2
 @Service
 public class RedditService {
 

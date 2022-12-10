@@ -1,17 +1,16 @@
 package com.kapitanovslog.dailyinfoapp.presentation.telegrambot;
 
 import com.kapitanovslog.dailyinfoapp.config.TelegramBotConfig;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-@Slf4j
+@Log4j2
 class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotConfig telegramBotConfig;
@@ -26,16 +25,17 @@ class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return telegramBotConfig.getUserName();
+        return telegramBotConfig.userName();
     }
 
     @Override
     public String getBotToken() {
-        return telegramBotConfig.getKey();
+        return telegramBotConfig.key();
     }
 
     @Override
     public void onUpdateReceived(Update update) {
+        System.out.println(update);
         if (update == null || !update.hasMessage() || !update.getMessage().hasText()) {
             throw new IllegalArgumentException("Update cannot be 'null' or empty");
         }

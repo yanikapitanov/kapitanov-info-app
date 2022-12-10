@@ -26,7 +26,7 @@ class WeatherService {
                 .orElseThrow(() -> new IllegalStateException("Could not find geo location"));
 
         return WeatherResponse.builder()
-                .location(geocodeLocation.getDisplayName())
+                .location(geocodeLocation.displayName())
                 .alerts(response.getAlerts())
                 .daily(response.getDaily())
                 .hourly(response.getHourly())

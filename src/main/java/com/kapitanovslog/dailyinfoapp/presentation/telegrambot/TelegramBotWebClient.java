@@ -24,7 +24,7 @@ class TelegramBotWebClient {
                         .path("/bot{token}/sendMessage")
                         .queryParam("chat_id", chatId)
                         .queryParam("text", text)
-                        .build(telegramBotConfig.getKey()))
+                        .build(telegramBotConfig.key()))
                 .retrieve()
                 .toBodilessEntity()
                 .block();
