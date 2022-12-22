@@ -3,12 +3,12 @@ package com.kapitanovslog.dailyinfoapp.config;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
 
 @Getter
-@Validated
 @AllArgsConstructor
+@ConstructorBinding
 @ConfigurationProperties(prefix = "geocode")
 public class GeocodeConfig {
     private final String url;

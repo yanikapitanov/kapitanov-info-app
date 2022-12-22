@@ -1,12 +1,51 @@
 package com.kapitanovslog.dailyinfoapp.config;
 
-import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
-@Validated
+import java.util.Objects;
+
+@ConstructorBinding
 @ConfigurationProperties(prefix = "telegram")
-public record TelegramBotConfig(
-        @NotEmpty String key,
-        @NotEmpty String userName) {
+public final class TelegramBotConfig {
+
+    private final String key;
+    private final String userName;
+
+    TelegramBotConfig(
+            String key,
+            String userName) {
+        this.key = key;
+        this.userName = userName;
+    }
+
+    public String key() {
+        return key;
+    }
+
+    public String userName() {
+        return userName;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (TelegramBotConfig) obj;
+        return Objects.equals(this.key, that.key) &&
+                Objects.equals(this.userName, that.userName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, userName);
+    }
+
+    @Override
+    public String toString() {
+        return "TelegramBotConfig[" +
+                "key=" + key + ", " +
+                "userName=" + userName + ']';
+    }
+
 }

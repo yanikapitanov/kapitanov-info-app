@@ -23,7 +23,7 @@ class WeatherClient {
     }
 
     Optional<Response> fetchWeatherDetails(GeocodeLocation geocodeLocation) {
-        String url = weatherConfig.url().formatted(geocodeLocation.lat(), geocodeLocation.lon(), weatherConfig.key());
+        String url = String.format(weatherConfig.getUrl(), geocodeLocation.getLat(), geocodeLocation.getLon(), weatherConfig.getKey());
         return webClient.get()
                 .uri(URI.create(url))
                 .retrieve()

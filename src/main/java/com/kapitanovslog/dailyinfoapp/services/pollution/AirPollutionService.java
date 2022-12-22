@@ -34,9 +34,9 @@ public class AirPollutionService {
 
         GeocodeLocation geoLocation = geocodeService.findGeoLocation(location)
                 .orElseThrow(IllegalStateException::new);
-        int area = mapRegionArea(geoLocation.type());
+        int area = mapRegionArea(geoLocation.getType());
         List<AirPollution> airPollutions = airPollutionClient.fetchAirPollutionDetails(geoLocation, area);
-        AirPollutionResponse pollution = airPollutionMappingService.fetchPollutionDetails(airPollutions, geoLocation.displayName());
+        AirPollutionResponse pollution = airPollutionMappingService.fetchPollutionDetails(airPollutions, geoLocation.getDisplayName());
 
         return pollution.getLocation() + "\n\n" +
                 "Air Quality PM25: " + pollution.getPm25Quality() + "\n" +

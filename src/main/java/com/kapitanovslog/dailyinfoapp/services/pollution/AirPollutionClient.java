@@ -23,7 +23,7 @@ class AirPollutionClient {
 
     List<AirPollution> fetchAirPollutionDetails(GeocodeLocation geoLocation, int area) {
         return webClient.get()
-                .uri(URI.create(URL_PREFIX + geoLocation.lat() + "," + geoLocation.lon() + "," + area + URL_SUFFIX))
+                .uri(URI.create(URL_PREFIX + geoLocation.getLat() + "," + geoLocation.getLon() + "," + area + URL_SUFFIX))
                 .retrieve()
                 .bodyToMono(AirPollution[].class)
                 .map(Arrays::asList)
