@@ -2,11 +2,9 @@ package com.kapitanovslog.dailyinfoapp.config;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 
 @Getter
-@ConstructorBinding
 @ConfigurationProperties(prefix = "weather")
 public final class WeatherConfig {
 

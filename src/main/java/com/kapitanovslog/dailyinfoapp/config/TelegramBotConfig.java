@@ -1,11 +1,9 @@
 package com.kapitanovslog.dailyinfoapp.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 import java.util.Objects;
 
-@ConstructorBinding
 @ConfigurationProperties(prefix = "telegram")
 public final class TelegramBotConfig {
 

@@ -1,5 +1,6 @@
-package com.kapitanovslog.dailyinfoapp.services.reminder;
+package com.kapitanovslog.dailyinfoapp.services.reminder.persistence;
 
+import com.kapitanovslog.dailyinfoapp.services.reminder.Reminder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-class ReminderPersistence {
+public class ReminderPersistence {
 
     private final ReminderRepository reminderRepository;
 
@@ -17,13 +18,13 @@ class ReminderPersistence {
         this.reminderRepository = reminderRepository;
     }
 
-    List<Reminder> findAllRemindersByReminderAt(LocalDate reminderAt) {
+     public List<Reminder> findAllRemindersByReminderAt(LocalDate reminderAt) {
         return reminderRepository.findByReminderAt(reminderAt).stream()
                 .map(ReminderEntity::toDomain)
                 .collect(Collectors.toList());
     }
 
-    Reminder save(Reminder reminder) {
+     public Reminder save(Reminder reminder) {
         ReminderEntity toBeSaved = ReminderEntity.toEntity(reminder);
         ReminderEntity saved = reminderRepository.save(toBeSaved);
         return ReminderEntity.toDomain(saved);

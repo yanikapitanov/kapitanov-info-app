@@ -1,6 +1,5 @@
 package com.kapitanovslog.dailyinfoapp.presentation.telegrambot;
 
-import com.kapitanovslog.dailyinfoapp.services.covid.CovidService;
 import com.kapitanovslog.dailyinfoapp.services.pollution.AirPollutionService;
 import com.kapitanovslog.dailyinfoapp.services.reminder.ReminderService;
 import com.kapitanovslog.dailyinfoapp.services.transport.TelegramBotTransport;
@@ -20,19 +19,16 @@ class MenuService {
 
      private final WeatherBotService weatherBotService;
      private final AirPollutionService airPollutionService;
-     private final CovidService covidService;
      private final TelegramBotTransport telegramBotTransport;
      private final ReminderService reminderService;
 
     @Autowired
     MenuService(WeatherBotService weatherBotService,
                 AirPollutionService airPollutionService,
-                CovidService covidService,
                 TelegramBotTransport telegramBotTransport,
                 ReminderService reminderService) {
         this.weatherBotService = weatherBotService;
         this.airPollutionService = airPollutionService;
-        this.covidService = covidService;
         this.telegramBotTransport = telegramBotTransport;
         this.reminderService = reminderService;
     }
@@ -55,9 +51,6 @@ class MenuService {
         if (command.getCommand().equalsIgnoreCase("/pollution")) {
             return airPollutionService.findAirPollutionDetails(command.getDetails());
         }
-        if (command.getCommand().equalsIgnoreCase("/covid")) {
-            return covidService.findCovidInfoByCountry(command.getDetails());
-        }
         if (command.getCommand().equalsIgnoreCase("/transport")) {
             return telegramBotTransport.provideInterruptions(command.getDetails());
         }
@@ -75,7 +68,6 @@ class MenuService {
         return "/pollution - Shows air pollution at a given location using open source data e.g. /pollution Munich\n" +
                 "/weekly - Shows weather prediction for the next 7 days for a given location e.g. /weekly London\n" +
                 "/daily - Shows weather prediction in hours for a given location e.g. /daily London\n" +
-                "/covid - Provides Covid19 info per country e.g. /covid Germany\n" +
                 "/transport - Provides disruptions public transport disruptions in Munich for a particular line e.g. /transport s1\n" +
                 "/help - Provides a help menu";
     }

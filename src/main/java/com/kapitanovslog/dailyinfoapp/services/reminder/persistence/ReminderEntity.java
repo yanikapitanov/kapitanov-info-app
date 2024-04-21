@@ -1,5 +1,6 @@
-package com.kapitanovslog.dailyinfoapp.services.reminder;
+package com.kapitanovslog.dailyinfoapp.services.reminder.persistence;
 
+import com.kapitanovslog.dailyinfoapp.services.reminder.Reminder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

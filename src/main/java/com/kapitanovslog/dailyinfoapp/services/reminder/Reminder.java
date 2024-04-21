@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-class Reminder {
+public class Reminder {
 
     private final Long chatId;
     private final LocalDate reminderAt;

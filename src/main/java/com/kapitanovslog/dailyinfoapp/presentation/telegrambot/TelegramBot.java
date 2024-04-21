@@ -9,8 +9,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@Component
 @Log4j2
+@Component
 class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramBotConfig telegramBotConfig;
@@ -35,7 +35,6 @@ class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        System.out.println(update);
         if (update == null || !update.hasMessage() || !update.getMessage().hasText()) {
             throw new IllegalArgumentException("Update cannot be 'null' or empty");
         }

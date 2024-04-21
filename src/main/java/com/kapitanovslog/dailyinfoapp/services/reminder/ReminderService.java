@@ -1,7 +1,11 @@
 package com.kapitanovslog.dailyinfoapp.services.reminder;
 
+import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
+import com.kapitanovslog.dailyinfoapp.services.ServiceProvider;
+import com.kapitanovslog.dailyinfoapp.services.reminder.persistence.ReminderPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
@@ -13,8 +17,8 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
 
-@Service
-public class ReminderService {
+@Service("reminder")
+public class ReminderService implements ServiceProvider {
 
     private final ReminderPersistence reminderPersistence;
 
@@ -23,6 +27,7 @@ public class ReminderService {
         this.reminderPersistence = reminderPersistence;
     }
 
+    @Transactional
     public String storeReminder(Long chatId, String message) {
         Objects.requireNonNull(chatId);
         Objects.requireNonNull(message);
@@ -54,4 +59,8 @@ public class ReminderService {
                                 ""))));
     }
 
+    @Override
+    public String execute(RequestMessage requestMessage) {
+        return "";
+    }
 }

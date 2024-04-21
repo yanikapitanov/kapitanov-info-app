@@ -1,5 +1,7 @@
 package com.kapitanovslog.dailyinfoapp.services.weather;
 
+import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
+import com.kapitanovslog.dailyinfoapp.services.ServiceProvider;
 import com.kapitanovslog.dailyinfoapp.services.weather.model.TimeItem;
 import com.kapitanovslog.dailyinfoapp.services.weather.model.WeatherItem;
 import com.vdurmont.emoji.EmojiParser;
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Component
-public class WeatherBotService {
+public class WeatherBotService implements ServiceProvider {
 
     private static final Map<String, String> EMOJIS = Map.of(
             "cloud", ":cloud:",
@@ -79,4 +81,8 @@ public class WeatherBotService {
                 .orElse("");
     }
 
+    @Override
+    public String execute(RequestMessage requestMessage) {
+        return "";
+    }
 }

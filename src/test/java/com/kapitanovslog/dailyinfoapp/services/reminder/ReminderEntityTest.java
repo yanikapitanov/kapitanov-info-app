@@ -1,5 +1,6 @@
 package com.kapitanovslog.dailyinfoapp.services.reminder;
 
+import com.kapitanovslog.dailyinfoapp.services.reminder.persistence.ReminderEntity;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

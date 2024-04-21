@@ -22,7 +22,6 @@ class Command {
     }
 
     static Command of(String userInput) {
-        System.out.println(userInput);
         Objects.requireNonNull(userInput);
         String command = parseUserInput(userInput, s -> s.startsWith("/"), "");
         String commandDetails = parseUserInput(userInput, s -> !s.startsWith("/"), " ");
