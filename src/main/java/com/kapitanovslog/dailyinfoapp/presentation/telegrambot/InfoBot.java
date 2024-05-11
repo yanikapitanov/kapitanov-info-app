@@ -11,14 +11,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Log4j2
 @Component
-class TelegramBot extends TelegramLongPollingBot {
+class InfoBot extends TelegramLongPollingBot {
 
     private final TelegramBotConfig telegramBotConfig;
     private final MenuService menuService;
 
     @Autowired
-    TelegramBot(TelegramBotConfig telegramBotConfig,
-                MenuService menuService) {
+    InfoBot(TelegramBotConfig telegramBotConfig,
+                   MenuService menuService) {
+        super(telegramBotConfig.key());
         this.telegramBotConfig = telegramBotConfig;
         this.menuService = menuService;
     }
@@ -29,15 +30,12 @@ class TelegramBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public String getBotToken() {
-        return telegramBotConfig.key();
-    }
-
-    @Override
     public void onUpdateReceived(Update update) {
+        log.info(update);
         if (update == null || !update.hasMessage() || !update.getMessage().hasText()) {
             throw new IllegalArgumentException("Update cannot be 'null' or empty");
         }
+        log.info(update);
         String messageText = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
         String responseBody = menuService.handleRequest(chatId, messageText);

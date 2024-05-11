@@ -21,7 +21,7 @@ geocode:
   url: "https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=1&type=suburb"
 
 covid:
-  url:
+  url:2024-05-11T19:13:47.979+02:00  INFO 26753 --- [  restartedMain] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8111 (http)
 
 weather:
   url: "https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&appid=%s&units=metric"
