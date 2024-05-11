@@ -1,5 +1,6 @@
 package com.kapitanovslog.dailyinfoapp.presentation.telegrambot;
 
+import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
 import com.kapitanovslog.dailyinfoapp.services.pollution.AirPollutionService;
 import com.kapitanovslog.dailyinfoapp.services.reminder.ReminderService;
 import com.kapitanovslog.dailyinfoapp.services.transport.TelegramBotTransport;
@@ -71,16 +72,9 @@ class MenuServiceTest implements WithAssertions {
 
     @Test
     void fetchWeeklyWeatherSuccessfully() {
-        when(weatherBotService.fetchWeeklyWeather("test")).thenReturn("test");
+        RequestMessage requestMessage = new RequestMessage(1L, "test");
+        when(weatherBotService.execute(requestMessage)).thenReturn("test");
         String result = underTest.handleRequest(1L, "/weekly test");
-
-        assertThat(result).isEqualTo("test");
-    }
-
-    @Test
-    void fetchDailyWeatherSuccessfully() {
-        when(weatherBotService.fetchHourlyWeather("test")).thenReturn("test");
-        String result = underTest.handleRequest(1L, "/daily test");
 
         assertThat(result).isEqualTo("test");
     }

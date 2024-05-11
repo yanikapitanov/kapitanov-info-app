@@ -1,9 +1,7 @@
 package com.kapitanovslog.dailyinfoapp.presentation.telegrambot;
 
-import com.kapitanovslog.dailyinfoapp.services.pollution.AirPollutionService;
-import com.kapitanovslog.dailyinfoapp.services.reminder.ReminderService;
-import com.kapitanovslog.dailyinfoapp.services.transport.TelegramBotTransport;
-import com.kapitanovslog.dailyinfoapp.services.weather.WeatherBotService;
+import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
+import com.kapitanovslog.dailyinfoapp.services.ServiceProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,20 +15,11 @@ import java.util.Objects;
 class MenuService {
 
 
-     private final WeatherBotService weatherBotService;
-     private final AirPollutionService airPollutionService;
-     private final TelegramBotTransport telegramBotTransport;
-     private final ReminderService reminderService;
+     private final Map<String, ServiceProvider> serviceProviderRegistry;
 
     @Autowired
-    MenuService(WeatherBotService weatherBotService,
-                AirPollutionService airPollutionService,
-                TelegramBotTransport telegramBotTransport,
-                ReminderService reminderService) {
-        this.weatherBotService = weatherBotService;
-        this.airPollutionService = airPollutionService;
-        this.telegramBotTransport = telegramBotTransport;
-        this.reminderService = reminderService;
+    MenuService(Map<String, ServiceProvider> serviceProviderRegistry) {
+        this.serviceProviderRegistry = serviceProviderRegistry;
     }
 
     String handleRequest(Long chatId, String userInput) {
@@ -42,34 +31,22 @@ class MenuService {
             return printHelpMenu();
         }
 
-        if (command.getCommand().equalsIgnoreCase("/weekly")) {
-            return weatherBotService.fetchWeeklyWeather(command.getDetails());
-        }
-        if (command.getCommand().equalsIgnoreCase("/daily")) {
-            return weatherBotService.fetchHourlyWeather(command.getDetails());
-        }
-        if (command.getCommand().equalsIgnoreCase("/pollution")) {
-            return airPollutionService.findAirPollutionDetails(command.getDetails());
-        }
-        if (command.getCommand().equalsIgnoreCase("/transport")) {
-            return telegramBotTransport.provideInterruptions(command.getDetails());
-        }
-        if (command.getCommand().equalsIgnoreCase("/reminder")) {
-            return reminderService.storeReminder(chatId, command.getDetails());
-        }
-        return printHelpMenu();
+        RequestMessage requestMessage = new RequestMessage(chatId, command.getDetails());
+
+        String result = serviceProviderRegistry.get(command.getCommand()).execute(requestMessage);
+        return result.isBlank() ? printHelpMenu() : result;
     }
 
     public Map<Long, String> findAllRemindersBy(LocalDate reminderAt) {
-        return reminderService.findAllRemindersBy(reminderAt);
+        return Map.of();
     }
 
     private static String printHelpMenu() {
-        return "/pollution - Shows air pollution at a given location using open source data e.g. /pollution Munich\n" +
-                "/weekly - Shows weather prediction for the next 7 days for a given location e.g. /weekly London\n" +
-                "/daily - Shows weather prediction in hours for a given location e.g. /daily London\n" +
-                "/transport - Provides disruptions public transport disruptions in Munich for a particular line e.g. /transport s1\n" +
-                "/help - Provides a help menu";
+        return """
+                /pollution - Shows air pollution at a given location using open source data e.g. /pollution Munich
+                /weather - Shows current weather for a given location e.g. /weather London
+                /transport - Provides disruptions public transport disruptions in Munich for a particular line e.g. /transport s1
+                /help - Provides a help menu""";
     }
 
 }

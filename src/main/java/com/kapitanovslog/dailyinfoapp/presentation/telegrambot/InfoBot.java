@@ -31,11 +31,9 @@ class InfoBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        log.info(update);
         if (update == null || !update.hasMessage() || !update.getMessage().hasText()) {
             throw new IllegalArgumentException("Update cannot be 'null' or empty");
         }
-        log.info(update);
         String messageText = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
         String responseBody = menuService.handleRequest(chatId, messageText);

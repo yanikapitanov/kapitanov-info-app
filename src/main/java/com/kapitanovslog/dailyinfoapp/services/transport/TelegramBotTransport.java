@@ -1,14 +1,16 @@
 package com.kapitanovslog.dailyinfoapp.services.transport;
 
+import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
+import com.kapitanovslog.dailyinfoapp.services.ServiceProvider;
 import com.kapitanovslog.dailyinfoapp.services.transport.model.Line;
 import com.kapitanovslog.dailyinfoapp.services.transport.model.TransportResponse;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class TelegramBotTransport {
+@Service("/transport")
+public class TelegramBotTransport implements ServiceProvider {
 
     private final PublicTransportInterruptionsService service;
 
@@ -37,5 +39,10 @@ public class TelegramBotTransport {
 
     public String getLinesAffected(List<Line> lines) {
         return String.format("Lines affected %s%n", lines.stream().map(Line::getLine).collect(Collectors.joining(", ")));
+    }
+
+    @Override
+    public String execute(RequestMessage requestMessage) {
+        return "";
     }
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class GeocodeService {
@@ -17,10 +16,11 @@ public class GeocodeService {
         this.geocodeClient = geocodeClient;
     }
 
-    public Optional<GeocodeLocation> findGeoLocation(String location) {
+    public GeocodeLocation findGeoLocation(String location) {
         Objects.requireNonNull(location, "Location cannot be null");
         return geocodeClient.findGeocodeLocation(location).stream()
                 .limit(1)
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Could not find geo location"));
     }
 }

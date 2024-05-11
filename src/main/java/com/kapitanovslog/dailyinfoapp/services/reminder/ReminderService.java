@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
 
-@Service("reminder")
+@Service("/reminder")
 public class ReminderService implements ServiceProvider {
 
     private final ReminderPersistence reminderPersistence;

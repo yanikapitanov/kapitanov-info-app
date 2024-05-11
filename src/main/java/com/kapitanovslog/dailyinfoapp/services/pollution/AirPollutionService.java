@@ -1,5 +1,7 @@
 package com.kapitanovslog.dailyinfoapp.services.pollution;
 
+import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
+import com.kapitanovslog.dailyinfoapp.services.ServiceProvider;
 import com.kapitanovslog.dailyinfoapp.services.geolocation.GeocodeService;
 import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollution;
 import com.kapitanovslog.dailyinfoapp.services.geolocation.model.GeocodeLocation;
@@ -11,8 +13,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
-@Service
-public class AirPollutionService {
+@Service("/pollution")
+public class AirPollutionService implements ServiceProvider {
 
     public static final DecimalFormat DF = new DecimalFormat("#.00");
 
@@ -32,11 +34,10 @@ public class AirPollutionService {
     public String findAirPollutionDetails(String location) {
         Objects.requireNonNull(location, "Geo location cannot be null");
 
-        GeocodeLocation geoLocation = geocodeService.findGeoLocation(location)
-                .orElseThrow(IllegalStateException::new);
-        int area = mapRegionArea(geoLocation.getType());
+        GeocodeLocation geoLocation = geocodeService.findGeoLocation(location);
+        int area = mapRegionArea(geoLocation.type());
         List<AirPollution> airPollutions = airPollutionClient.fetchAirPollutionDetails(geoLocation, area);
-        AirPollutionResponse pollution = airPollutionMappingService.fetchPollutionDetails(airPollutions, geoLocation.getDisplayName());
+        AirPollutionResponse pollution = airPollutionMappingService.fetchPollutionDetails(airPollutions, geoLocation.displayName());
 
         return pollution.getLocation() + "\n\n" +
                 "Air Quality PM25: " + pollution.getPm25Quality() + "\n" +
@@ -56,5 +57,10 @@ public class AirPollutionService {
             return 300;
         }
         return 1;
+    }
+
+    @Override
+    public String execute(RequestMessage requestMessage) {
+        return "";
     }
 }
