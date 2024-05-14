@@ -3,16 +3,17 @@ package com.kapitanovslog.dailyinfoapp.services.pollution;
 import com.kapitanovslog.dailyinfoapp.model.RequestMessage;
 import com.kapitanovslog.dailyinfoapp.services.ServiceProvider;
 import com.kapitanovslog.dailyinfoapp.services.geolocation.GeocodeService;
-import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollution;
 import com.kapitanovslog.dailyinfoapp.services.geolocation.model.GeocodeLocation;
+import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollutionResource;
 import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollutionResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Objects;
 
+@Log4j2
 @Service("/pollution")
 public class AirPollutionService implements ServiceProvider {
 
@@ -31,12 +32,12 @@ public class AirPollutionService implements ServiceProvider {
         this.geocodeService = geocodeService;
     }
 
-    public String findAirPollutionDetails(String location) {
+    private String findAirPollutionDetails(String location) {
         Objects.requireNonNull(location, "Geo location cannot be null");
 
         GeocodeLocation geoLocation = geocodeService.findGeoLocation(location);
-        int area = mapRegionArea(geoLocation.type());
-        List<AirPollution> airPollutions = airPollutionClient.fetchAirPollutionDetails(geoLocation, area);
+        AirPollutionResource airPollutions = airPollutionClient.fetchAirPollutionDetails(geoLocation);
+        log.info("Air pollution: {}", airPollutions);
         AirPollutionResponse pollution = airPollutionMappingService.fetchPollutionDetails(airPollutions, geoLocation.displayName());
 
         return pollution.getLocation() + "\n\n" +
@@ -46,21 +47,8 @@ public class AirPollutionService implements ServiceProvider {
                 "Coarse particulate matter: " + DF.format(pollution.getPm10Value()) + "\n";
     }
 
-    private int mapRegionArea(String location) {
-        if (location.equalsIgnoreCase("suburb")) {
-            return 1;
-        }
-        if (location.equalsIgnoreCase("town")) {
-            return 15;
-        }
-        if (location.equalsIgnoreCase("administrative")) {
-            return 300;
-        }
-        return 1;
-    }
-
     @Override
     public String execute(RequestMessage requestMessage) {
-        return "";
+        return findAirPollutionDetails(requestMessage.message());
     }
 }

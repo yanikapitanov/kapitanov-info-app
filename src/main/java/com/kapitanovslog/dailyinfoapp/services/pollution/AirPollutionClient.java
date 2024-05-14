@@ -1,33 +1,32 @@
 package com.kapitanovslog.dailyinfoapp.services.pollution;
 
 import com.kapitanovslog.dailyinfoapp.services.geolocation.model.GeocodeLocation;
-import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollution;
+import com.kapitanovslog.dailyinfoapp.services.pollution.config.AirPollutionProperties;
+import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollutionResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.web.client.RestClient;
 
 @Component
 class AirPollutionClient {
 
-    public static final String URL_PREFIX = "https://data.sensor.community/airrohr/v1/filter/area=";
-    public static final String URL_SUFFIX = "&type=SDS011";
-    private final WebClient webClient;
+    private final RestClient webClient;
+    private final AirPollutionProperties airPollutionProperties;
 
-
-    AirPollutionClient(WebClient webClient) {
-        this.webClient = webClient;
+    @Autowired
+    AirPollutionClient(RestClient airPollutionRestClient, AirPollutionProperties airPollutionProperties) {
+        this.webClient = airPollutionRestClient;
+        this.airPollutionProperties = airPollutionProperties;
     }
 
-    List<AirPollution> fetchAirPollutionDetails(GeocodeLocation geoLocation, int area) {
+    AirPollutionResource fetchAirPollutionDetails(GeocodeLocation geoLocation) {
         return webClient.get()
-                .uri(URI.create(URL_PREFIX + geoLocation.lat() + "," + geoLocation.lon() + "," + area + URL_SUFFIX))
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("lat", geoLocation.lat())
+                        .queryParam("lon", geoLocation.lon())
+                        .queryParam("appId", airPollutionProperties.key())
+                        .build())
                 .retrieve()
-                .bodyToMono(AirPollution[].class)
-                .map(Arrays::asList)
-                .blockOptional()
-                .orElseGet(List::of);
+                .body(AirPollutionResource.class);
     }
 }

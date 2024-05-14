@@ -1,19 +1,16 @@
 package com.kapitanovslog.dailyinfoapp.services.pollution;
 
-import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollution;
+import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollutionResource;
 import com.kapitanovslog.dailyinfoapp.services.pollution.model.AirPollutionResponse;
-import com.kapitanovslog.dailyinfoapp.services.pollution.model.SensorDataValues;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 class AirPollutionMappingService {
 
 
-    AirPollutionResponse fetchPollutionDetails(List<AirPollution> pollutions, String areaDisplayName) {
-        double pm10Avg = calculateAverage(pollutions, "P1");
-        double pm25AVg = calculateAverage(pollutions, "P2");
+    AirPollutionResponse fetchPollutionDetails(AirPollutionResource pollutions, String areaDisplayName) {
+        double pm10Avg = calculatePm10Average(pollutions);
+        double pm25AVg = calculatePm25Average(pollutions);
         String pm25Quality = mapAirQualityForPM25(pm25AVg);
         String pm10Quality = mapAirQualityForPM10(pm10Avg);
 
@@ -26,13 +23,18 @@ class AirPollutionMappingService {
                 .build();
     }
 
-    private double calculateAverage(List<AirPollution> pollutions, String filter) {
-        return pollutions.stream()
-                .flatMap(airPollution -> airPollution.getSensorDataValues().stream())
-                .filter(sensorDataValues -> sensorDataValues.getValueType().equalsIgnoreCase(filter))
-                .mapToDouble(SensorDataValues::getValue)
-                .average()
-                .orElse(0);
+    private double calculatePm10Average(AirPollutionResource pollutions) {
+        return pollutions.items().stream()
+                .map(components -> components.components().pm10())
+                .reduce(Double::sum)
+                .orElse(0.0);
+    }
+
+    private double calculatePm25Average(AirPollutionResource pollutions) {
+        return pollutions.items().stream()
+                .map(components -> components.components().pm25())
+                .reduce(Double::sum)
+                .orElse(0.0);
     }
 
     private String mapAirQualityForPM10(double pm10FilterValue) {

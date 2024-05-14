@@ -5,5 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import jakarta.validation.constraints.NotBlank;
 
 @ConfigurationProperties(prefix = "weather")
-public record WeatherConfig(@NotBlank String url,@NotBlank String key) {
+public record WeatherConfig(@NotBlank String url, @NotBlank String key) {
+
 }

@@ -3,11 +3,10 @@ package com.kapitanovslog.dailyinfoapp.services.geolocation;
 import com.kapitanovslog.dailyinfoapp.services.geolocation.model.GeocodeLocation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Log4j2
@@ -16,10 +15,10 @@ class GeocodeClient {
 
     // https://nominatim.openstreetmap.org/search?q=donnersbergerbrucke&format=json&polygon=1&addressdetails=1&type=suburb
 
-    private final WebClient webClient;
+    private final RestClient webClient;
 
     @Autowired
-    GeocodeClient(WebClient geoWebClient) {
+    GeocodeClient(RestClient geoWebClient) {
         this.webClient = geoWebClient;
     }
 
@@ -35,11 +34,7 @@ class GeocodeClient {
                         .queryParam("type", "suburb")
                         .build())
                 .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse -> clientResponse.bodyToMono(String.class)
-                        .map(body -> new RuntimeException("Error: " + body)))
-                .bodyToMono(GeocodeLocation[].class)
-                .log()
-                .map(Arrays::asList)
-                .block();
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 }

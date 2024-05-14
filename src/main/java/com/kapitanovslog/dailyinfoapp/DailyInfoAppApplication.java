@@ -3,6 +3,7 @@ package com.kapitanovslog.dailyinfoapp;
 import com.kapitanovslog.dailyinfoapp.config.GeocodeConfig;
 import com.kapitanovslog.dailyinfoapp.config.TelegramBotConfig;
 import com.kapitanovslog.dailyinfoapp.config.WeatherConfig;
+import com.kapitanovslog.dailyinfoapp.services.pollution.config.AirPollutionProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,7 +21,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @EnableConfigurationProperties({
         GeocodeConfig.class,
         TelegramBotConfig.class,
-        WeatherConfig.class
+        WeatherConfig.class,
+        AirPollutionProperties.class
+
 })
 public class DailyInfoAppApplication {
 

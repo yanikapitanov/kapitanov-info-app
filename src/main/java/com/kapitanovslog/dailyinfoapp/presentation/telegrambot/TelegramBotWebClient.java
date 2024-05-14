@@ -3,18 +3,18 @@ package com.kapitanovslog.dailyinfoapp.presentation.telegrambot;
 import com.kapitanovslog.dailyinfoapp.config.TelegramBotConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Component
 class TelegramBotWebClient {
 
-    private final WebClient webClient;
+    private final RestClient webClient;
     private final TelegramBotConfig telegramBotConfig;
 
     @Autowired
-    TelegramBotWebClient(WebClient.Builder webClient,
+    TelegramBotWebClient(RestClient telegramWebClient,
                          TelegramBotConfig telegramBotConfig) {
-        this.webClient = webClient.baseUrl("https://api.telegram.org").build();
+        this.webClient = telegramWebClient;
         this.telegramBotConfig = telegramBotConfig;
     }
 
@@ -26,7 +26,6 @@ class TelegramBotWebClient {
                         .queryParam("text", text)
                         .build(telegramBotConfig.key()))
                 .retrieve()
-                .toBodilessEntity()
-                .block();
+                .toBodilessEntity();
     }
 }

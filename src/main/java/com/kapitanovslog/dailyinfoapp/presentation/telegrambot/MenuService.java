@@ -30,7 +30,7 @@ class MenuService {
         if (command.getDetails().isBlank()) {
             return printHelpMenu();
         }
-
+        log.info("Command: {}", command);
         RequestMessage requestMessage = new RequestMessage(chatId, command.getDetails());
 
         String result = serviceProviderRegistry.get(command.getCommand()).execute(requestMessage);
